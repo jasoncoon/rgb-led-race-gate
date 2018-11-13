@@ -24,7 +24,7 @@ FASTLED_USING_NAMESPACE
 //#define LED_TYPE    APA102
 #define LED_TYPE    WS2812
 #define COLOR_ORDER GRB
-#define NUM_LEDS    120
+#define NUM_LEDS    120  // 60 for S, M, L, XL gates. 120 for MultiGP 19"x19" gates.  92 for 19" hoop
 CRGB leds[NUM_LEDS];
 
 #define FRAMES_PER_SECOND  60
@@ -83,6 +83,18 @@ const uint8_t coordsHeat[NUM_LEDS] = { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 2
 #define MATRIX_WIDTH 32
 #define MATRIX_HEIGHT 32
 
+//// maps for 92 LED hoop
+//const uint8_t coordsX[NUM_LEDS] = { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 24, 25, 26, 27, 27, 28, 28, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 29, 29, 29, 28, 28, 27, 27, 26, 25, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 6, 5, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+//const uint8_t coordsY[NUM_LEDS] = { 30, 30, 30, 30, 29, 29, 29, 28, 28, 27, 27, 26, 25, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 6, 5, 4, 3, 3, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 24, 25, 26, 27, 27, 28, 28, 29, 29, 29, 30, 30, 30 };
+//
+//const uint8_t coordsX256[NUM_LEDS] = { 127, 136, 144, 153, 161, 170, 178, 185, 193, 200, 207, 214, 220, 226, 231, 236, 240, 243, 247, 249, 251, 253, 254, 254, 254, 253, 251, 249, 247, 243, 240, 236, 231, 226, 220, 214, 207, 200, 193, 185, 178, 170, 161, 153, 144, 136, 127, 118, 110, 101, 93, 84, 76, 69, 61, 54, 47, 40, 34, 28, 23, 18, 14, 11, 7, 5, 3, 1, 0, 0, 0, 1, 3, 5, 7, 11, 14, 18, 23, 28, 34, 40, 47, 54, 61, 69, 76, 84, 93, 101, 110, 118 };
+//const uint8_t coordsY256[NUM_LEDS] = { 254, 254, 253, 251, 249, 247, 243, 240, 236, 231, 226, 220, 214, 207, 200, 193, 185, 178, 170, 161, 153, 144, 136, 127, 118, 110, 101, 93, 84, 76, 69, 61, 54, 47, 40, 34, 28, 23, 18, 14, 11, 7, 5, 3, 1, 0, 0, 0, 1, 3, 5, 7, 11, 14, 18, 23, 28, 34, 40, 47, 54, 61, 69, 76, 84, 93, 101, 110, 118, 127, 136, 144, 153, 161, 170, 178, 185, 193, 200, 207, 214, 220, 226, 231, 236, 240, 243, 247, 249, 251, 253, 254 };
+//
+//const uint8_t coordsHeat[NUM_LEDS] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+//
+//#define MATRIX_WIDTH 32
+//#define MATRIX_HEIGHT 32
+
 #define MAX_DIMENSION ((MATRIX_WIDTH > MATRIX_HEIGHT) ? MATRIX_WIDTH : MATRIX_HEIGHT)
 
 #include "Noise.h"
@@ -130,39 +142,39 @@ SimplePatternList patterns = {
   colorWaves,
 
   // noise patterns
-  //  fireNoise,
-  //  fireNoise2,
+  fireNoise,
+  fireNoise2,
 
-  //  paletteNoise,
-  //  lavaNoise,
-  //  rainbowNoise,
-  //  rainbowStripeNoise,
-  //  partyNoise,
-  //  forestNoise,
-  //  cloudNoise,
-  //  oceanNoise,
-  //  blackAndWhiteNoise,
-  //  blackAndBlueNoise,
+  paletteNoise,
+  lavaNoise,
+  rainbowNoise,
+  rainbowStripeNoise,
+  partyNoise,
+  forestNoise,
+  cloudNoise,
+  oceanNoise,
+  blackAndWhiteNoise,
+  blackAndBlueNoise,
 
   // palette shifting/blending patterns
-  //  verticalRainbow,
-  //  horizontalRainbow,
-  //  diagonalRainbow,
-  //  verticalPaletteBlend,
-  //  horizontalPaletteBlend,
+  verticalRainbow,
+  horizontalRainbow,
+  diagonalRainbow,
+  verticalPaletteBlend,
+  horizontalPaletteBlend,
 
-  //  chaseRainbow3,
-  //  chasePalette,
-  //  chasePalette2,
-  //  chasePalette3,
-  //  solidPalette,
-  //  solidRainbow,
-  //  rainbow,
-  //  rainbowWithGlitter,
-  //  confetti,
-  //  sinelon,
-  //  juggle,
-  //  bpm,
+  chaseRainbow3,
+  chasePalette,
+  chasePalette2,
+  chasePalette3,
+  solidPalette,
+  solidRainbow,
+  rainbow,
+  rainbowWithGlitter,
+  confetti,
+  sinelon,
+  juggle,
+  bpm,
 
 };
 
